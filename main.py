@@ -36,7 +36,7 @@ def main():
 
         st.write('Target races are below:')
         for target in targets:
-            race_url(target['rno'], target['jcd'], today)
+            st.write(race_url(target['rno'], target['jcd'], today))
 
         # 逃げ情報の解析はjsで構築されるテーブルへの対応が必要
         # escape_data = get_boat_data.fetch_frame_info(8, '03', today)
