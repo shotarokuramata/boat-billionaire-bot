@@ -1,1 +1,4 @@
 # boat-billionaire-bot
+
+DOCUMENT_ROOTのリソースはstreamlitにホストして動かす直前情報取得用
+src以下は逃げ得意マンをメール送信するリソース
