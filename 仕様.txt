@@ -1,14 +1,3 @@
-
-
-1.直前情報(https://www.boatrace.jp/owpc/pc/race/beforeinfo?rno=8&jcd=03&hd=20240802)
-・展示タイムがあるかどうか
-・1号艇が最速かどうか
-・直前情報の侵入がわくなりかどうか
-
-2.ボートレース日和(https://kyoteibiyori.com/race_shusso.php?place_no=3&race_no=8&hiduke=20240802&slider=1)
-・1号艇の逃げが70%を超えているか
-・2号艇の逃がしが60%以上か
-
 各urlのパラメータ
 1.直前情報(https://www.boatrace.jp/owpc/pc/race/beforeinfo?rno=8&jcd=03&hd=20240802)
 ・rno レース番号
@@ -20,3 +9,31 @@
 ・race_no レース番号
 ・hiduke 日付
 ・slider 情報タブ(1は枠別情報)
+
+仕様1st
+1.直前情報(https://www.boatrace.jp/owpc/pc/race/beforeinfo?rno=8&jcd=03&hd=20240802)
+・展示タイムがあるかどうか
+・1号艇が最速かどうか
+・直前情報の侵入がわくなりかどうか
+
+2.ボートレース日和(https://kyoteibiyori.com/race_shusso.php?place_no=3&race_no=8&hiduke=20240802&slider=1)
+・1号艇の逃げが70%を超えているか
+・2号艇の逃がしが60%以上か
+
+
+8/2の仕様更新2nd
+・直前情報を見ないで一覧をメールで送信
+・pc上でホストする前提なのでヘッドレスでスクレイピングしてok streamlitは使わない
+
+①戸田・江戸川・鳴門・福岡以外の20場
+②1号艇の全国勝率5.00未満は対象外
+③1～6号艇の勝率の最大の差が2.00未満
+
+ボートレース日和のサイトより
+④直近1年のイン逃げ率60％以上
+⑤直近半年のイン逃げ率55％以上
+⑥直近1年・半年のイン逃がし率ともに60％以上
+⑦直近1年の差され率11％未満
+⑧直近1年の捲られ率22％未満
+⑨過去10走で1着6回以上
+⑦11→15、⑧22→25に変更します。
