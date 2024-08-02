@@ -1,0 +1,22 @@
+
+
+1.直前情報(https://www.boatrace.jp/owpc/pc/race/beforeinfo?rno=8&jcd=03&hd=20240802)
+・展示タイムがあるかどうか
+・1号艇が最速かどうか
+・直前情報の侵入がわくなりかどうか
+
+2.ボートレース日和(https://kyoteibiyori.com/race_shusso.php?place_no=3&race_no=8&hiduke=20240802&slider=1)
+・1号艇の逃げが70%を超えているか
+・2号艇の逃がしが60%以上か
+
+各urlのパラメータ
+1.直前情報(https://www.boatrace.jp/owpc/pc/race/beforeinfo?rno=8&jcd=03&hd=20240802)
+・rno レース番号
+・jcd 会場番号
+・hd　日付
+
+2.ボートレース日和(https://kyoteibiyori.com/race_shusso.php?place_no=3&race_no=8&hiduke=20240802&slider=1)
+・place_no 会場番号
+・race_no レース番号
+・hiduke 日付
+・slider 情報タブ(1は枠別情報)
