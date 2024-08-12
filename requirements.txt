@@ -3,3 +3,5 @@ streamlit
 requests
 requests_html
 lxml_html_clean
+pytest-playwright
+playwright
