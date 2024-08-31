@@ -1,61 +1,64 @@
-import get_boat_data
 import datetime
-import streamlit as st
+import time
+import argparse
+from pprint import pprint
+from playwright.sync_api import sync_playwright
+
+import get_boat_data
+import get_kyotei_biyori as biyori
+from data import RaceDataDTO
+from report import ReportDTO
 
 
 
-def main():
+
+def main(place_no: int):
     today = datetime.date.today().strftime('%Y%m%d')
-    st.title('Boat Race Data Fetcher')
 
+    # 全レース場に対してスクレイピングすると回線に問題が出るので1レース場に限定する
+    # races = get_boat_data.fetch_all_race_info(today)
+    # place_no_list = [race["jcd"] for race in races]
+    place_no = place_no
 
-    if st.button('Fetch Race Data'):
+    rounds = 12
 
-        races = get_boat_data.fetch_all_race_info(today)
-
-        targets = []
-        for race in races:
-            data = get_boat_data.fetch_before_info(race['rno'], race['jcd'], today)
-            if not data[0]:
-                # print('No before data:race ' + race['jcd'] + '#' + race['rno'] + 'R')
-                # continue
-                st.write('No before data: race ' + race['jcd'] + '#' + race['rno'] + 'R')
-                continue
-
-            result = check_is_first_lane_fastest(data)
+    report_list = []
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        for round in range(1, rounds + 1):
+            report = ReportDTO()
+            report.race_url = get_race_url(round, place_no, today)
+            result = biyori.check_is_target_race(round, place_no, today, '0', browser)
             if result == False:
-                # print('first lane is not fastest:race ' + race['jcd'] + '#' + race['rno'] + 'R')
-                # continue
-                st.write('First lane is not fastest: race ' + race['jcd'] + '#' + race['rno'] + 'R')
+                report.message = 'this is not target: place'+ str(place_no) + '&round' + str(round)
+                report_list.append(report)
                 continue
-            targets.append(race)
+            data = biyori.fetch_frame_info(round, place_no, today, '1', browser)
+            report.data = data
+            report_list.append(report)
+        browser.close()
 
-        # print('target races are below')
-        # for target in targets:
-        #     print(target['jcd'] + '#' + target['rno'] + 'R')
+    for report in report_list:
+        if report.message is None:
+            if report.data.is_target():
+                report.message = '対象データです'
+            else:
+                report.message = 'データを抽出しましたが、条件に合致しませんでした。'
 
-        st.write('Target races are below:')
-        for target in targets:
-            st.write(race_url(target['rno'], target['jcd'], today))
+    for r in report_list:
+        pprint('Race url: ' + r.race_url)
+        pprint(r.message)
+        if (r.data):
+            pprint(r.data)
 
-        # 逃げ情報の解析はjsで構築されるテーブルへの対応が必要
-        # escape_data = get_boat_data.fetch_frame_info(8, '03', today)
-
-
-
-        # for row in data:
-        #     print(row)
-
-
-def check_is_first_lane_fastest(data):
-    if data[0] == min(data):
-        return True
-    return False
-
-def race_url(rno, jcd, today):
+def get_race_url(rno, jcd, today):
     url_base = 'https://www.boatrace.jp/owpc/pc/race/racelist'
     url_param = f'?rno={rno}&jcd={jcd}&hd={today}'
     return url_base + url_param
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('place_no', type=int, help='The place number')
+
+    args = parser.parse_args()
+    main(args.place_no)
