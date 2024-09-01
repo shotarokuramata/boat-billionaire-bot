@@ -1,3 +1,5 @@
+# bort-billionaire-bot
+
 <h2>導入手順</h2>
 
 1. requirement.txtの内容をpipでインストールする
