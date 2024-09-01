@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.utils import formatdate
 import json
 
-def send_mail(subject, body):
+def send(subject, body):
     # JSONファイルを読み込む
     with open('config.json', 'r') as f:
         config = json.load(f)

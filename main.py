@@ -1,16 +1,14 @@
 import datetime
 import time
 import argparse
-from pprint import pprint
+from pprint import pformat
 from playwright.sync_api import sync_playwright
 
 import get_boat_data
 import get_kyotei_biyori as biyori
 from data import RaceDataDTO
 from report import ReportDTO
-
-
-
+import mail
 
 def main(place_no: int):
     today = datetime.date.today().strftime('%Y%m%d')
@@ -45,12 +43,17 @@ def main(place_no: int):
             else:
                 report.message = 'データを抽出しましたが、条件に合致しませんでした。'
 
+    subject = 'bot実行結果 会場NO:' + str(place_no) + ' 日付:' + today
+    msg = ''
+
     for r in report_list:
-        print('Race url')
-        print(r.race_url)
-        pprint(r.message)
-        if (r.data):
-            pprint(r.data)
+        msg += 'Race URL: ' + r.race_url + '\n'
+        msg += 'Message: ' + r.message + '\n'
+        if r.data:
+            msg += 'Data: ' + pformat(r.data) + '\n'
+        msg += '-' * 40 + '\n'
+
+    mail.send(subject, msg)
 
 def get_race_url(rno, jcd, today):
     if rno < 10:
