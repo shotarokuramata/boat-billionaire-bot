@@ -1,0 +1,5 @@
+{
+    "from_address": "test@gmail.com",
+    "to_address": "recipient_email@gmail.com",
+    "password": "your_password"
+}
