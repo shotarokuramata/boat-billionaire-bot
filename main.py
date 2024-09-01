@@ -46,12 +46,17 @@ def main(place_no: int):
                 report.message = 'データを抽出しましたが、条件に合致しませんでした。'
 
     for r in report_list:
-        pprint('Race url: ' + r.race_url)
+        print('Race url')
+        print(r.race_url)
         pprint(r.message)
         if (r.data):
             pprint(r.data)
 
 def get_race_url(rno, jcd, today):
+    if rno < 10:
+        rno = '0' + str(rno)
+    if jcd < 10:
+        jcd = '0' + str(jcd)
     url_base = 'https://www.boatrace.jp/owpc/pc/race/racelist'
     url_param = f'?rno={rno}&jcd={jcd}&hd={today}'
     return url_base + url_param
