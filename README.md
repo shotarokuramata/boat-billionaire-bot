@@ -1,4 +1,15 @@
-# boat-billionaire-bot
+<h2>導入手順
 
-DOCUMENT_ROOTのリソースはstreamlitにホストして動かす直前情報取得用
-src以下は逃げ得意マンをメール送信するリソース
+1. requirement.txtの内容をpipでインストールする
+
+```
+pip install -r requirements.txt
+```
+
+2. config.jsonを作成
+
+config.example.jsonの内容を参考に、必要情報を設定する。
+
+※gmailのパスワードについて、アプリパスワードを発行する必要がある。
+
+参考:https://support.google.com/accounts/answer/185833?hl=ja
