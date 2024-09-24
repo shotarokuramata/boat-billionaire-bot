@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 
 @dataclass
 class RaceDataDTO:
@@ -11,12 +12,15 @@ class RaceDataDTO:
     first_place_in_last_ten_race: int = 0
 
     def is_target(self)->bool:
+        with open('config_race_data.json', 'r') as f:
+            json_data = json.load(f)
+
         return (
-            self.escape_last_year >= 60 and
-            self.escape_last_half_year >= 55 and
-            self.allow_escape_last_year >= 60 and
-            self.allow_escape_last_half_year >= 60 and
-            self.pierce_last_year < 11.0 and
-            self.overtake_last_year < 22.0 and
-            self.first_place_in_last_ten_race >= 6
+            (json_data.get('escape_last_year', 0) == 0 or self.escape_last_year >= json_data['escape_last_year']) and
+            (json_data.get('escape_last_half_year', 0) == 0 or self.escape_last_half_year >= json_data['escape_last_half_year']) and
+            (json_data.get('allow_escape_last_year', 0) == 0 or self.allow_escape_last_year >= json_data['allow_escape_last_year']) and
+            (json_data.get('allow_escape_last_half_year', 0) == 0 or self.allow_escape_last_half_year >= json_data['allow_escape_last_half_year']) and
+            (json_data.get('pierce_last_year', 0) == 0 or self.pierce_last_year < json_data['pierce_last_year']) and
+            (json_data.get('overtake_last_year', 0) == 0 or self.overtake_last_year < json_data['overtake_last_year']) and
+            (json_data.get('first_place_in_last_ten_race', 0) == 0 or self.first_place_in_last_ten_race >= json_data['first_place_in_last_ten_race'])
         )

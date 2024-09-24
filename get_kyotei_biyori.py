@@ -55,7 +55,7 @@ def get_base_info(content):
     row_values.pop(0)
     return [float(value) for value in row_values]
 
-def fetch_frame_info(race_no, place_no, today, slider, browser: Browser):
+def fetch_frame_info(race_no, place_no, today, slider, browser: Browser) -> RaceDataDTO:
     url_base = 'https://kyoteibiyori.com/race_shusso.php'
     url_param = f'?place_no={place_no}&race_no={race_no}&hiduke={today}'
     # slider0なら基本情報 1なら枠別情報

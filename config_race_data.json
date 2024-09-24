@@ -1,0 +1,9 @@
+{
+    "escape_last_year": 60,
+    "escape_last_half_year": 55,
+    "allow_escape_last_year": 60,
+    "allow_escape_last_half_year": 60,
+    "pierce_last_year": 11.0,
+    "overtake_last_year": 22.0,
+    "first_place_in_last_ten_race": 6
+}
