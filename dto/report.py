@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from data import RaceDataDTO
+from dto.data import RaceDataDTO
 from typing import Optional
 
 @dataclass

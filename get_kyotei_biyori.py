@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 import datetime
 from playwright.sync_api import sync_playwright, Browser
-from data import RaceDataDTO
+from dto.data import RaceDataDTO
 
 def check_is_target_race(race_no, place_no, today, slider, browser: Browser):
     url_base = 'https://kyoteibiyori.com/race_shusso.php'

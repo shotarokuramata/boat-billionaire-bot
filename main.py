@@ -6,8 +6,8 @@ from playwright.sync_api import sync_playwright
 
 import get_boat_data
 import get_kyotei_biyori as biyori
-from data import RaceDataDTO
-from report import ReportDTO
+from dto.data import RaceDataDTO
+from dto.report import ReportDTO
 import mail
 
 def main(place_no: int):
