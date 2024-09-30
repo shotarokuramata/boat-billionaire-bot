@@ -9,6 +9,8 @@ import get_kyotei_biyori as biyori
 from dto.data import RaceDataDTO
 from dto.report import ReportDTO
 import mail
+import csv
+import os
 
 def main(place_no: int):
     today = datetime.date.today().strftime('%Y%m%d')
@@ -54,6 +56,25 @@ def main(place_no: int):
         msg += '-' * 40 + '\n'
 
     mail.send(subject, msg)
+
+
+    valid_data_list = [r for r in report_list if r.message == '対象データです']
+
+    if valid_data_list == []:
+        print('csv対象データなし。')
+        return
+
+    csv_file_path = 'csv/output.csv'
+    isFile = os.path.exists(csv_file_path)
+    with open(csv_file_path, 'a', newline='') as csv_file:
+        writer = csv.writer(csv_file)
+        if not isFile:
+            header = valid_data_list[0].get_csv_header_list()
+            writer.writerow(header)
+
+        for r in valid_data_list:
+            body = r.get_csv_body_list()
+            writer.writerow(body)
 
 def get_race_url(rno, jcd, today):
     if rno < 10:
