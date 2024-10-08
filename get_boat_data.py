@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
+import re
 
 def fetch_all_race_info(today):
     url = 'https://www.boatrace.jp/owpc/pc/race/index?hd=' + today
@@ -105,5 +106,66 @@ def get_escape_info(content):
         cols = row.find_all('td')
         if exhibition_time_index < len(cols):
             data.append(cols[exhibition_time_index].text.strip())
+
+    return data
+
+def fetch_result_info(url):
+    response = requests.get(url)
+    response.raise_for_status()  # エラーチェック
+
+    with open('output2.html', 'wb') as file:
+        file.write(response.content)
+
+    data = {}
+    data['race_result'] = get_raceresult_info(response.content)
+    data['race_environment'] = get_environment_info(response.content)
+    return data
+
+def get_raceresult_info(content):
+    # BeautifulSoupで解析
+    soup = BeautifulSoup(content, 'html.parser')
+
+
+    # テーブルを見つける
+    units = soup.find_all('div', class_='grid_unit')
+
+    with open('output.txt', 'w', encoding='utf-8') as f:
+        for unit in units:
+            f.write(str(unit))
+            f.write('\n')  # 各要素の間に空行を追加
+
+    result_unit = units[0]
+    result_data = get_result_info(result_unit)
+
+    return result_data
+
+def get_result_info(result_unit):
+    tds = result_unit.find_all('td', class_=re.compile(r'is-boatColor\d+'))
+    data = [item.get_text(strip=True) for item in tds]
+    return data
+
+def get_environment_info(content):
+    # BeautifulSoupで解析
+    soup = BeautifulSoup(content, 'html.parser')
+
+    # 天気関連情報
+    weather_html = soup.find('div', class_='weather1')
+    data = {}
+    wind_html = weather_html.find('div', class_='is-wind')
+    data['wind_speed'] = wind_html.find('span', class_='weather1_bodyUnitLabelData').get_text(strip=True)
+    wind_direction_div = weather_html.find('div', class_='is-windDirection')
+    data['wind_direction'] = wind_direction_div.find('p').get('class')[1].replace('is-wind', '')
+
+    wave_html = weather_html.find('div', class_='is-wave')
+    data['wave'] = wave_html.find('span', class_='weather1_bodyUnitLabelData').get_text(strip=True)
+
+    # その他レース情報
+    race_distance = soup.find('h3', class_='title16_titleDetail__add2020')
+    race_distance_text = race_distance.get_text(strip=True)
+    race_distance_text = re.sub(r'\D', '', race_distance_text)
+    data['race_distance'] = race_distance_text
+
+    won_by_td = soup.find('td', class_='is-fs16')
+    data['won_by'] = won_by_td.get_text(strip=True)
 
     return data

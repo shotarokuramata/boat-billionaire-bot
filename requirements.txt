@@ -3,3 +3,4 @@ requests
 requests_html
 pytest-playwright
 playwright
+pandas

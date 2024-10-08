@@ -13,7 +13,7 @@ import csv
 import os
 
 def main(place_no: int):
-    today = datetime.date.today().strftime('%Y%m%d')
+    today = get_today()
 
     # 全レース場に対してスクレイピングすると回線に問題が出るので1レース場に限定する
     # races = get_boat_data.fetch_all_race_info(today)
@@ -64,7 +64,7 @@ def main(place_no: int):
         print('csv対象データなし。')
         return
 
-    csv_file_path = 'csv/output.csv'
+    csv_file_path = get_csv_path(today)
     isFile = os.path.exists(csv_file_path)
     with open(csv_file_path, 'a', newline='') as csv_file:
         writer = csv.writer(csv_file)
@@ -84,6 +84,12 @@ def get_race_url(rno, jcd, today):
     url_base = 'https://www.boatrace.jp/owpc/pc/race/racelist'
     url_param = f'?rno={rno}&jcd={jcd}&hd={today}'
     return url_base + url_param
+
+def get_today():
+    return datetime.date.today().strftime('%Y%m%d')
+
+def get_csv_path(today):
+    return 'csv/' + str(today) +'.csv'
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process some integers.')
